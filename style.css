@@ -70,3 +70,32 @@ button:hover {
   font-weight: bold;
   color: #333;
 }
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#nums {
+  width: 100%;
+  padding-right: 30px; /* Espaço para o ícone de limpar */
+}
+
+.clear-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #888;
+  font-size: 18px;
+  display: none; /* Oculto inicialmente */
+}
+
+.clear-icon:hover {
+  color: #000;
+}
+
+/* Exibir o ícone de limpar quando o campo tiver texto */
+#nums:not(:placeholder-shown) + .clear-icon {
+  display: inline;
+}

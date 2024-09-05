@@ -27,10 +27,10 @@ function checkSubarraySum(nums, k) {
 }
 
 // Função para validar as informações em que o usuário colocou
-function handleButtonClick() {
-  const numsInput = document.getElementById('nums').value; // div do array de números
-  const kInput = document.getElementById('k').value; // div do valor de k
-  const resultDiv = document.getElementById('result'); // div onde mostra o resultado obtido
+function validacaoInputs() {
+  const numsInput = document.getElementById('nums').value;
+  const kInput = document.getElementById('k').value;
+  const resultDiv = document.getElementById('result');
 
   // Validação dos valores
   if (!numsInput || !kInput) {
@@ -39,14 +39,30 @@ function handleButtonClick() {
     return;
   }
 
+  // Remover letras do array usando regex para melhor validação
+  const validadorRegexArray = numsInput.replace(/[a-zA-Z]/g, '');
+
+  // Atualizar o campo com o regex feito caso tenha vogais e/ou consoantes
+  document.getElementById('nums').value = validadorRegexArray;
+
   // Conversão dos valores
-  const numsArray = numsInput.split(',').map((num) => parseInt(num.trim()));
+  const numsArray = validadorRegexArray
+    .split(',')
+    .map((num) => parseInt(num.trim()));
   const k = parseInt(kInput);
 
-  // Verificação dos valores inválidos no array
+  // Verificação dos valores inválidos no array e em k
   if (numsArray.some(isNaN) || isNaN(k)) {
     resultDiv.innerText =
       'Por favor, certifique-se de que todos os valores inseridos sejam números válidos.';
+    resultDiv.style.color = '#dc3545';
+    return;
+  }
+
+  // Verificação de números negativos no array e em k
+  if (numsArray.some((num) => num < 0) || k < 0) {
+    resultDiv.innerText =
+      'Números negativos não são permitidos no array ou no valor de k.';
     resultDiv.style.color = '#dc3545';
     return;
   }
@@ -67,8 +83,18 @@ function handleButtonClick() {
   }
 }
 
+// Função para limpar os valores salvos do array
+function limparValor() {
+  const numsInput = document.getElementById('nums');
+  numsInput.value = '';
+  numsInput.focus();
+}
+
 // Adicionando o evento de clique ao botão após o carregamento da página
 window.addEventListener('DOMContentLoaded', () => {
   const checkButton = document.getElementById('checkButton');
-  checkButton.addEventListener('click', handleButtonClick);
+  const clearArray = document.getElementById('clear');
+
+  checkButton.addEventListener('click', validacaoInputs);
+  clearArray.addEventListener('click', limparValor);
 });
